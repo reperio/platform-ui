@@ -26,6 +26,12 @@ const NavMenu = (props: any) => (
                         <i className="fa fa-user fa-lg"></i> Users
                     </NavItem>
                 </LinkContainer> : null,
+            props.authSession.isAuthenticated ?
+                <LinkContainer key="2" exact to="/permissions">
+                    <NavItem>
+                        <i className="fa fa-user fa-lg"></i> Permissions
+                    </NavItem>
+                </LinkContainer> : null,
             !props.authSession.isAuthenticated ?
                 <LinkContainer key="3" exact to="/signup">
                     <NavItem>
