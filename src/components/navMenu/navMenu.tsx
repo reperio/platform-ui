@@ -1,7 +1,7 @@
 import React from 'react'
 import {Navbar, LinkContainer, NavItem, ApplicationMenuItem} from '@reperio/ui-components'
-import NavMenuLogOutLinkContainer from '../../containers/navMenuLogOutLinkContainer';
 import NavMenuLoginLink from './navMenuLoginLink';
+import { NavDropdown } from 'react-bootstrap';
 
 const NavMenu = (props: any) => (
     <Navbar
@@ -32,25 +32,31 @@ const NavMenu = (props: any) => (
                     <i className="fa fa-wheelchair-alt fa-lg"></i> Roles
                 </NavItem>
             </LinkContainer> : null,
-            props.authSession.isAuthenticated ?
-                <LinkContainer key="4" exact to="/permissions">
-                    <NavItem>
-                        <i className="fa fa-shield fa-lg"></i> Permissions
-                    </NavItem>
-                </LinkContainer> : null,
             !props.authSession.isAuthenticated ?
-                <LinkContainer key="5" exact to="/signup">
+                <LinkContainer key="4" exact to="/signup">
                     <NavItem>
                         <i className="fa fa-home fa-lg"></i> Signup
                     </NavItem> 
                 </LinkContainer> : null,
+            !props.authSession.isAuthenticated ?
+                <LinkContainer key="5" exact to="">
+                    <NavMenuLoginLink/>
+                </LinkContainer> : null,
             props.authSession.isAuthenticated ?
-            <LinkContainer key="6" exact to="">
-                <NavMenuLogOutLinkContainer/>
-            </LinkContainer> : 
-            <LinkContainer key="7" exact to="">
-                <NavMenuLoginLink/>
-            </LinkContainer>,
+                <NavDropdown key="6" title="Administration" id="admin-dropdown">
+                    {props.authSession.isAuthenticated ?
+                        <LinkContainer key="7" exact to="/permissions">
+                            <NavItem>
+                                <i className="fa fa-shield fa-lg"></i> Permissions
+                            </NavItem>
+                        </LinkContainer> : null}
+                    {props.authSession.isAuthenticated ?
+                        <LinkContainer key="8" exact to="/organizations">
+                            <NavItem>
+                                <i className="fa fa-sitemap fa-lg"></i> Organizations
+                            </NavItem>
+                        </LinkContainer> : null}
+                </NavDropdown> : null
         ]}
         applicationMenuItems={[
             <ApplicationMenuItem key="1" name="Example1" label="Example" />,
@@ -58,8 +64,7 @@ const NavMenu = (props: any) => (
             <ApplicationMenuItem key="3" name="Nic Cage" image="https://images-na.ssl-images-amazon.com/images/I/61Wo915nuTL._SX425_.jpg" />,
             <ApplicationMenuItem key="4" name="Nic Cage" image="https://images-na.ssl-images-amazon.com/images/I/61Wo915nuTL._SX425_.jpg" />,
             <ApplicationMenuItem key="5" name="Nic Cage" image="https://images-na.ssl-images-amazon.com/images/I/61Wo915nuTL._SX425_.jpg" />
-        ]}
-        >
+        ]}>
     </Navbar>
 );
 
