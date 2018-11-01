@@ -51,27 +51,33 @@ class UserService {
     async editUserEmails(userId: string, initialUser: User, added: UserEmail[], deleted: UserEmail[], primaryUserEmail: UserEmail) {
 
         if(added.length > 0) {
-            const addedPayload = {
-                emails: added.map((x: UserEmail) => x.email)
-            };
+            const payload = {
+                userEmails: added
+                    .map((x: UserEmail) => {
+                        return {
+                            email: x.email,
+                            id: x.id
+                        }
+                    })
+                }
 
-            await axios.post(`/users/${userId}/addUserEmails`, addedPayload);
+            await axios.post(`/users/${userId}/addUserEmails`, payload);
         }
 
         if(deleted.length > 0) {
-            const deletedPayload = {
+            const payload = {
                 userEmailIds: deleted.map((x: UserEmail) => x.id)
             };
     
-            await axios.post(`/users/${userId}/deleteUserEmails`, deletedPayload);
+            await axios.post(`/users/${userId}/deleteUserEmails`, payload);
         }
 
         if (initialUser.primaryEmailAddress !== primaryUserEmail.email) {
-            const primaryEmailPayload = {
+            const payload = {
                 primaryUserEmailId: primaryUserEmail.id
             };
 
-            await axios.put(`/users/${userId}/setPrimaryUserEmail`, primaryEmailPayload);
+            await axios.put(`/users/${userId}/setPrimaryUserEmail`, payload);
         }
     }
 
