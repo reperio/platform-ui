@@ -1,5 +1,6 @@
 import { axios } from "./axiosService";
 import UserEmail from "../models/userEmail";
+import User from "../models/user";
 
 class UserService {
     async getUserById(userId: string) {
@@ -37,6 +38,55 @@ class UserService {
             primaryEmailId
         }
         return await axios.put(`/users/${userId}`, payload);
+    }
+
+    async editUserGeneral(userId: string, firstName: string, lastName: string) {
+        const payload = {
+            firstName, 
+            lastName
+        }
+        return await axios.put(`/users/${userId}/general`, payload);
+    }
+
+    async editUserEmails(userId: string, initialUser: User, added: UserEmail[], deleted: UserEmail[], primaryUserEmail: UserEmail) {
+
+        if(added.length > 0) {
+            const addedPayload = {
+                emails: added.map((x: UserEmail) => x.email)
+            };
+
+            await axios.post(`/users/${userId}/addUserEmails`, addedPayload);
+        }
+
+        if(deleted.length > 0) {
+            const deletedPayload = {
+                userEmailIds: deleted.map((x: UserEmail) => x.id)
+            };
+    
+            await axios.post(`/users/${userId}/deleteUserEmails`, deletedPayload);
+        }
+
+        if (initialUser.primaryEmailAddress !== primaryUserEmail.email) {
+            const primaryEmailPayload = {
+                primaryUserEmailId: primaryUserEmail.id
+            };
+
+            await axios.put(`/users/${userId}/setPrimaryUserEmail`, primaryEmailPayload);
+        }
+    }
+
+    async editUserOrganizations(userId: string, organizationIds: string[]) {
+        const payload = {
+            organizationIds
+        }
+        return await axios.put(`/users/${userId}/organizations`, payload);
+    }
+
+    async editUserRoles(userId: string, roleIds: string[]) {
+        const payload = {
+            roleIds
+        }
+        return await axios.put(`/users/${userId}/roles`, payload);
     }
 }
 
