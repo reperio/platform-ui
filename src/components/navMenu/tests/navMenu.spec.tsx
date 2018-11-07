@@ -33,7 +33,8 @@ test('Checks to see if logged in, does not show login link and the first is home
     selectedRoles: [],
     userEmails: [],
     userOrganizations: [],
-    userRoles: []
+    userRoles: [],
+    permissions: []
   }
   const wrapper = mount(
     <MemoryRouter>

@@ -22,24 +22,23 @@ import OrganizationCreateFormContainer from "../containers/organizations/organiz
 import ForgotPasswordFormContainer from "../containers/auth/forgotPasswordFormContainer";
 import ResetPasswordFormContainer from "../containers/auth/resetPasswordFormContainer";
 import ErrorContainer from '../containers/errorContainer';
+import { CorePermissions } from '../models/permission';
 
 const Routes = () => (
     <div className="app-content">
         <Switch>
             <PrivateRouteContainer exact path="/home" component={MainDashboardContainer} />
-            <PrivateRouteContainer exact path="/users" component={UsersContainer} />
-            <PrivateRouteContainer exact path="/users/new" component={UserCreateFormContainer} />
-            <PrivateRouteContainer exact path="/users/:userId/edit" component={UserManagementFormContainer} />
-            <PrivateRouteContainer exact path="/userCreate" component={UserCreateFormContainer} />
-            <PrivateRouteContainer exact path="/userManagement" component={UserManagementFormContainer} />
-            <PrivateRouteContainer exact path="/roles" component={RolesContainer} />
-            <PrivateRouteContainer exact path="/roles/:roleId/edit" component={RoleManagementContainer} />
-            <PrivateRouteContainer exact path="/roles/new" component={RoleCreateFormContainer} />
-            <PrivateRouteContainer exact path="/permissions" component={PermissionsContainer} />
-            <PrivateRouteContainer exact path="/permissions/:permissionName/edit" component={PermissionManagementContainer} />
-            <PrivateRouteContainer exact path="/organizations" component={OrganizationsContainer} />
-            <PrivateRouteContainer exact path="/organizations/:organizationId/edit" component={OrganizationManagementContainer} />
-            <PrivateRouteContainer exact path="/organizations/new" component={OrganizationCreateFormContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewUsers]} exact path="/users" component={UsersContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewUsers, CorePermissions.CreateUsers]} exact path="/users/new" component={UserCreateFormContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewUsers]} exact path="/users/:userId/edit" component={UserManagementFormContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewRoles]} exact path="/roles" component={RolesContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewRoles]} exact path="/roles/:roleId/edit" component={RoleManagementContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewRoles, CorePermissions.CreateRoles]} exact path="/roles/new" component={RoleCreateFormContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewPermissions]} exact path="/permissions" component={PermissionsContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewPermissions]} exact path="/permissions/:permissionName/edit" component={PermissionManagementContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewOrganizations]} exact path="/organizations" component={OrganizationsContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewOrganizations]} exact path="/organizations/:organizationId/edit" component={OrganizationManagementContainer} />
+            <PrivateRouteContainer requiredPermissions={[CorePermissions.ViewOrganizations, CorePermissions.CreateOrganizations]} exact path="/organizations/new" component={OrganizationCreateFormContainer} />
             <PublicRouteContainer exact path="/login" component={LoginFormContainer} />
             <PublicRouteContainer exact path="/signup" component={SignupFormContainer} />
             <PublicRouteContainer exact path="/emailVerification/:token" component={EmailVerificationContainer} />
