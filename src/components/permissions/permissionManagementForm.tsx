@@ -122,7 +122,7 @@ const PermissionManagementForm: React.SFC<Form> = (props: Form) => (
                         <Wrapper>
                             <div className="row management-submission-controls-container">
                                 <div className="r-row-child management-submission-controls">
-                                    <ButtonElement type="button" color="cancel" wide text="Cancel" onClick={() => props.navigateToPermissions()} />
+                                    <ButtonElement type="button" color="cancel" wide text="Back" onClick={() => props.navigateToPermissions()} />
                                 </div>
                                 {props.canUpdatePermissions ? 
                                     <div className="r-row-child management-submission-controls">
@@ -164,7 +164,7 @@ const PermissionManagementForm: React.SFC<Form> = (props: Form) => (
                         <Wrapper>
                             <div className="row management-submission-controls-container">
                                 <div className="r-row-child management-submission-controls">
-                                    <ButtonElement type="button" color="cancel" wide text="Cancel" onClick={() => props.navigateToPermissions()} />
+                                    <ButtonElement type="button" color="cancel" wide text="Back" onClick={() => props.navigateToPermissions()} />
                                 </div>
                                 {props.canUpdatePermissions ? 
                                     <div className="r-row-child management-submission-controls">

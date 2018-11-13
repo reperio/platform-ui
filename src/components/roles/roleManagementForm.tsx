@@ -96,7 +96,6 @@ const RoleManagementForm: React.SFC<Form> = (props: Form) => (
                                             canUpdateRoles={props.canUpdateRoles}
                                             rerenderOnEveryChange={true}
                                             initialValues={props.initialValues.selectedPermissions}
-                                            toggle={false}
                                             removePermission={props.removePermission}
                                             component={PermissionsArray}/>
                             </div>
