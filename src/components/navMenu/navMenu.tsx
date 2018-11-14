@@ -64,26 +64,35 @@ export const OrganizationsLink = () => (
     </LinkContainer>
 );
 
+interface AdminDropdownProps {
+    permissions: string[];
+}
+
+export const AdminDropdown = (props: AdminDropdownProps) => (
+    <NavDropdown pullRight title="Administration" id="admin-dropdown">
+        {props.permissions.includes(CorePermissions.ViewPermissions) ? <PermissionsLink /> : null}
+        {props.permissions.includes(CorePermissions.ViewOrganizations) ? <OrganizationsLink /> : null}
+    </NavDropdown>
+);
+
 const NavMenu = (props: NavMenuProps) => (
     <Navbar
         applicationName={"test"}
         authenticated={props.authSession.isAuthenticated}>
-
-
-        {props.authSession.isAuthenticated ? [
-            <HomeLink />,
-            props.authSession.user.permissions.includes(CorePermissions.ViewUsers) ? <UsersLink /> : null,
-            props.authSession.user.permissions.includes(CorePermissions.ViewRoles) ? <RolesLink /> : null,
-            props.authSession.user.permissions.includes(CorePermissions.ViewPermissions) || props.authSession.user.permissions.includes(CorePermissions.ViewOrganizations) ?
-                <NavDropdown pullRight title="Administration" id="admin-dropdown">
-                    {props.authSession.user.permissions.includes(CorePermissions.ViewPermissions) ? <PermissionsLink /> : null}
-                    {props.authSession.user.permissions.includes(CorePermissions.ViewOrganizations) ? <OrganizationsLink /> : null}
-                </NavDropdown> : null
-        ] : [
-            <LoginLink />,
-            <SignupLink />
-        ]}
-
+        {props.authSession.isAuthenticated ? 
+            <React.Fragment>
+                <HomeLink />
+                {props.authSession.user.permissions.includes(CorePermissions.ViewUsers) ? <UsersLink /> : null}
+                {props.authSession.user.permissions.includes(CorePermissions.ViewRoles) ? <RolesLink /> : null}
+                {props.authSession.user.permissions.includes(CorePermissions.ViewPermissions) || props.authSession.user.permissions.includes(CorePermissions.ViewOrganizations) ?
+                    <AdminDropdown  permissions={props.authSession.user.permissions} /> : null}
+            </React.Fragment>
+        :
+            <React.Fragment>
+                <SignupLink />
+                <LoginLink />
+            </React.Fragment>
+        }
     </Navbar>
 );
 
