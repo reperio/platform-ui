@@ -2,6 +2,7 @@ import React from 'react'
 import {Navbar, LinkContainer, NavItem} from '@reperio/ui-components'
 import { NavDropdown } from 'react-bootstrap';
 import { StateAuthSession } from '../../store/initialState';
+import { CorePermissions } from '../../models/permission';
 
 interface NavMenuProps {
     authSession: StateAuthSession;
@@ -63,24 +64,26 @@ export const OrganizationsLink = () => (
     </LinkContainer>
 );
 
-export const AdminDropdown = () => (
-    <NavDropdown pullRight title="Administration" id="admin-dropdown">
-        <PermissionsLink />
-        <OrganizationsLink />
-    </NavDropdown>
-);
-
 const NavMenu = (props: NavMenuProps) => (
     <Navbar
         applicationName={"test"}
         authenticated={props.authSession.isAuthenticated}>
 
-        {props.authSession.isAuthenticated ? <HomeLink /> : null}
-        {props.authSession.isAuthenticated ? <UsersLink /> : null}
-        {props.authSession.isAuthenticated ? <RolesLink /> : null}
-        {!props.authSession.isAuthenticated ? <SignupLink /> : null}
-        {!props.authSession.isAuthenticated ? <LoginLink /> : null}
-        {props.authSession.isAuthenticated ? <AdminDropdown /> : null}
+
+        {props.authSession.isAuthenticated ? [
+            <HomeLink />,
+            props.authSession.user.permissions.includes(CorePermissions.ViewUsers) ? <UsersLink /> : null,
+            props.authSession.user.permissions.includes(CorePermissions.ViewRoles) ? <RolesLink /> : null,
+            props.authSession.user.permissions.includes(CorePermissions.ViewPermissions) || props.authSession.user.permissions.includes(CorePermissions.ViewOrganizations) ?
+                <NavDropdown pullRight title="Administration" id="admin-dropdown">
+                    {props.authSession.user.permissions.includes(CorePermissions.ViewPermissions) ? <PermissionsLink /> : null}
+                    {props.authSession.user.permissions.includes(CorePermissions.ViewOrganizations) ? <OrganizationsLink /> : null}
+                </NavDropdown> : null
+        ] : [
+            <LoginLink />,
+            <SignupLink />
+        ]}
+
     </Navbar>
 );
 
