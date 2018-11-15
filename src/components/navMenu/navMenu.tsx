@@ -1,6 +1,5 @@
 import React from 'react'
 import {Navbar, LinkContainer, NavItem} from '@reperio/ui-components'
-import NavMenuLoginLink from './navMenuLoginLink';
 import { NavDropdown } from 'react-bootstrap';
 import { StateAuthSession } from '../../store/initialState';
 
@@ -8,55 +7,80 @@ interface NavMenuProps {
     authSession: StateAuthSession;
 }
 
+export const HomeLink = () => (
+    <LinkContainer exact to="/home">
+        <NavItem>
+            <i className="fa fa-home fa-lg"></i> Home
+        </NavItem>
+    </LinkContainer>
+);
+
+export const UsersLink = () => (
+    <LinkContainer exact to="/users">
+        <NavItem>
+            <i className="fa fa-user fa-lg"></i> Users
+        </NavItem>
+    </LinkContainer>
+);
+
+export const RolesLink = () => (
+    <LinkContainer exact to="/roles">
+        <NavItem>
+            <i className="fa fa-wheelchair-alt fa-lg"></i> Roles
+        </NavItem>
+    </LinkContainer>
+);
+
+export const SignupLink = () => (
+    <LinkContainer exact to="/signup">
+        <NavItem>
+            <i className="fa fa-home fa-lg"></i> Signup
+        </NavItem>
+    </LinkContainer>
+);
+
+export const LoginLink = () => (
+    <LinkContainer to="/login">
+        <NavItem>
+            <i className="fa fa-lock fa-lg"></i> Login
+        </NavItem>
+    </LinkContainer>
+);
+
+export const PermissionsLink = () => (
+    <LinkContainer exact to="/permissions">
+        <NavItem>
+            <i className="fa fa-shield fa-lg"></i> Permissions
+        </NavItem>
+    </LinkContainer>
+);
+
+export const OrganizationsLink = () => (
+    <LinkContainer exact to="/organizations">
+        <NavItem>
+            <i className="fa fa-sitemap fa-lg"></i> Organizations
+        </NavItem>
+    </LinkContainer>
+);
+
+export const AdminDropdown = () => (
+    <NavDropdown pullRight title="Administration" id="admin-dropdown">
+        <PermissionsLink />
+        <OrganizationsLink />
+    </NavDropdown>
+);
+
 const NavMenu = (props: NavMenuProps) => (
     <Navbar
         applicationName={"test"}
-        authenticated={props.authSession.isAuthenticated}
-        linkContainers={[
-            props.authSession.isAuthenticated ?
-                <LinkContainer key="1" exact to="/home">
-                    <NavItem>
-                        <i className="fa fa-home fa-lg"></i> Home
-                    </NavItem>
-                </LinkContainer> : null,
-            props.authSession.isAuthenticated ?
-                <LinkContainer key="2" exact to="/users">
-                    <NavItem>
-                        <i className="fa fa-user fa-lg"></i> Users
-                    </NavItem>
-                </LinkContainer> : null,
-            props.authSession.isAuthenticated ?
-            <LinkContainer key="3" exact to="/roles">
-                <NavItem>
-                    <i className="fa fa-wheelchair-alt fa-lg"></i> Roles
-                </NavItem>
-            </LinkContainer> : null,
-            !props.authSession.isAuthenticated ?
-                <LinkContainer key="4" exact to="/signup">
-                    <NavItem>
-                        <i className="fa fa-home fa-lg"></i> Signup
-                    </NavItem> 
-                </LinkContainer> : null,
-            !props.authSession.isAuthenticated ?
-                <LinkContainer key="5" exact to="">
-                    <NavMenuLoginLink/>
-                </LinkContainer> : null,
-            props.authSession.isAuthenticated ?
-                <NavDropdown pullRight key="6" title="Administration" id="admin-dropdown">
-                    {props.authSession.isAuthenticated ?
-                        <LinkContainer key="7" exact to="/permissions">
-                            <NavItem>
-                                <i className="fa fa-shield fa-lg"></i> Permissions
-                            </NavItem>
-                        </LinkContainer> : null}
-                    {props.authSession.isAuthenticated ?
-                        <LinkContainer key="8" exact to="/organizations">
-                            <NavItem>
-                                <i className="fa fa-sitemap fa-lg"></i> Organizations
-                            </NavItem>
-                        </LinkContainer> : null}
-                </NavDropdown> : null
-        ]}>
+        authenticated={props.authSession.isAuthenticated}>
+
+        {props.authSession.isAuthenticated ? <HomeLink /> : null}
+        {props.authSession.isAuthenticated ? <UsersLink /> : null}
+        {props.authSession.isAuthenticated ? <RolesLink /> : null}
+        {!props.authSession.isAuthenticated ? <SignupLink /> : null}
+        {!props.authSession.isAuthenticated ? <LoginLink /> : null}
+        {props.authSession.isAuthenticated ? <AdminDropdown /> : null}
     </Navbar>
 );
 
