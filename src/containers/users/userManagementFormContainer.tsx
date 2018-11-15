@@ -3,7 +3,7 @@ import {bindActionCreators} from "redux";
 import { State } from '../../store/initialState';
 import { selectOrganization, addOrganization, removeOrganization, clearManagementInitialUser, loadManagementInitialUser, toggleRoleDetails, 
     addRole, removeRole, selectRole, removeEmailAddress, setPrimaryEmailAddress, addEmailAddress, togglePanel, cancelUserPanel, editUserGeneral, 
-    editUserEmails, editUserOrganizations} from '../../actions/usersActions';
+    editUserEmails, editUserOrganizations, editUserRoles } from '../../actions/usersActions';
 import { getOrganizations } from '../../actions/organizationsActions';
 import { getRoles } from '../../actions/rolesActions';
 import { sendVerificationEmail } from '../../actions/authActions';
@@ -121,6 +121,16 @@ class UserManagementFormContainer extends React.Component<RouteComponentProps<an
         this.props.actions.editUserOrganizations(form.id, selectedOrganizations);
     }
 
+
+    editUserRoles(form: UserManagementFormValues) {
+        const selectedRoles = form.selectedRoles
+            .map((role: SelectedRole) => {
+                return role.value
+            });
+
+        this.props.actions.editUserRoles(this.props.user.id, selectedRoles);
+    }
+
     render() {
         return (
             <UserManagementForm activePanelIndex={this.props.activePanelIndex}
@@ -131,6 +141,7 @@ class UserManagementFormContainer extends React.Component<RouteComponentProps<an
                                 editUserEmails={this.editUserEmails.bind(this)}
                                 editUserGeneral={this.editUserGeneral.bind(this)}
                                 editUserOrganizations={this.editUserOrganizations.bind(this)}
+                                editUserRoles={this.editUserRoles.bind(this)}
                                 navigateToUsers={this.navigateToUsers.bind(this)} 
                                 organizations={this.props.organizations}
                                 redirectToErrorPage={this.props.redirectToErrorPage}
@@ -194,7 +205,8 @@ function mapActionToProps(dispatch: any) {
                 editUserGeneral,
                 submitForm,
                 editUserEmails,
-                editUserOrganizations
+                editUserOrganizations,
+                editUserRoles
             }, dispatch)
         };
     }
