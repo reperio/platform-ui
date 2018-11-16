@@ -5,6 +5,7 @@ import {TitleBar, ApplicationMenuItem } from '@reperio/ui-components'
 import { logout } from '../actions/authActions';
 import { State } from '../store/initialState';
 import { bindActionCreators } from '../../node_modules/redux';
+import {TitleBarHeader} from '../components/titleBarHeader';
 
 class AppContainer extends React.Component {
     props: any;
@@ -17,6 +18,7 @@ class AppContainer extends React.Component {
         return (
             <div className="page-container">
                 <TitleBar
+                    title={<TitleBarHeader/>}
                     isAuthenticated={this.props.authSession.isAuthenticated}
                     profile={this.props.authSession.isAuthenticated ? {
                         initials: `${this.props.authSession.user.firstName.charAt(0).toUpperCase()}${this.props.authSession.user.lastName.charAt(0).toUpperCase()}`,
