@@ -2,6 +2,7 @@ import React from 'react'
 import {Navbar, LinkContainer, NavItem} from '@reperio/ui-components'
 import { NavDropdown } from 'react-bootstrap';
 import { StateAuthSession } from '../../store/initialState';
+import { CorePermissions } from '../../models/permission';
 
 interface NavMenuProps {
     authSession: StateAuthSession;
@@ -63,10 +64,14 @@ export const OrganizationsLink = () => (
     </LinkContainer>
 );
 
-export const AdminDropdown = () => (
+interface AdminDropdownProps {
+    permissions: string[];
+}
+
+export const AdminDropdown = (props: AdminDropdownProps) => (
     <NavDropdown pullRight title="Administration" id="admin-dropdown">
-        <PermissionsLink />
-        <OrganizationsLink />
+        {props.permissions.includes(CorePermissions.ViewPermissions) ? <PermissionsLink /> : null}
+        {props.permissions.includes(CorePermissions.ViewOrganizations) ? <OrganizationsLink /> : null}
     </NavDropdown>
 );
 
@@ -74,13 +79,20 @@ const NavMenu = (props: NavMenuProps) => (
     <Navbar
         applicationName={"test"}
         authenticated={props.authSession.isAuthenticated}>
-
-        {props.authSession.isAuthenticated ? <HomeLink /> : null}
-        {props.authSession.isAuthenticated ? <UsersLink /> : null}
-        {props.authSession.isAuthenticated ? <RolesLink /> : null}
-        {!props.authSession.isAuthenticated ? <SignupLink /> : null}
-        {!props.authSession.isAuthenticated ? <LoginLink /> : null}
-        {props.authSession.isAuthenticated ? <AdminDropdown /> : null}
+        {props.authSession.isAuthenticated ? 
+            <React.Fragment>
+                <HomeLink />
+                {props.authSession.user.permissions.includes(CorePermissions.ViewUsers) ? <UsersLink /> : null}
+                {props.authSession.user.permissions.includes(CorePermissions.ViewRoles) ? <RolesLink /> : null}
+                {props.authSession.user.permissions.includes(CorePermissions.ViewPermissions) || props.authSession.user.permissions.includes(CorePermissions.ViewOrganizations) ?
+                    <AdminDropdown  permissions={props.authSession.user.permissions} /> : null}
+            </React.Fragment>
+        :
+            <React.Fragment>
+                <SignupLink />
+                <LoginLink />
+            </React.Fragment>
+        }
     </Navbar>
 );
 

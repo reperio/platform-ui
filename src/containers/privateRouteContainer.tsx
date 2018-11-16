@@ -8,6 +8,7 @@ interface OwnProps {
     path: string;
     exact: boolean;
     component: ComponentType<any>;
+    requiredPermissions?: string[];
 }
 
 interface StateProps extends ReturnType<typeof mapStateToProps> {}
@@ -16,7 +17,14 @@ class PrivateRouteContainer extends React.Component<RouteComponentProps<any> & S
 
     render() {
         return (
-            <PrivateRoute isAuthenticated={this.props.authSession.isAuthenticated} {...this.props} />
+            <PrivateRoute   hasPermission={
+                                this.props.requiredPermissions && this.props.authSession.isAuthenticated ? 
+                                    this.props.requiredPermissions
+                                        .every(val => this.props.authSession.user.permissions.includes(val)) 
+                                : true
+                            } 
+                            isAuthenticated={this.props.authSession.isAuthenticated} 
+                            {...this.props} />
         );
     }
 }
