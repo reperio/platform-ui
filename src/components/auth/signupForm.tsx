@@ -25,12 +25,7 @@ const SignupForm: React.SFC<Form> = (props: Form) => (
                         </div>
                     </div>              
                 : null}
-                    <div className="row">
-                        <div className="r-row-child">
-                            <h2>Sign Up</h2>
-                            <hr />
-                        </div>
-                    </div>
+                    <div className="row"></div>
                     <div className="row">
                         <div className="r-row-child">
                             <Field name="firstName" placeholder="First Name" type="text" component={TextboxElement} />

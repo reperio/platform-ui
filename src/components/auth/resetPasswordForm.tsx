@@ -15,10 +15,7 @@ const ResetPasswordForm: React.SFC<Form> = (props: Form) => (
         <Wrapper>
             {props.response ?
             <div className="r-wrapper-child">
-                <div className="row">
-                    <h2>Reset password</h2>
-                    <hr />
-                </div>
+                <div className="row"></div>
                 <div className="row">
                     <div className="r-row-child">
                         <label>Password</label>

@@ -13,12 +13,7 @@ const ForgotPasswordForm: React.SFC<Form> = (props: Form) => (
     <form onSubmit={props.handleSubmit(props.onSubmit)}>
         <Wrapper>
             <div className="r-wrapper-child ">
-                <div className="row">
-                    <div className="r-row-child">
-                        <h2>Forgot password</h2>
-                        <hr />
-                    </div>
-                </div>
+                <div className="row"></div>
                 <div className="row">
                     <div className="r-row-child">
                         <Field name="primaryEmailAddress" placeholder="Primary Email" type="text" component={TextboxElement} />
