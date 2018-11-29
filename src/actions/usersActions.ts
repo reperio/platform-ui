@@ -308,3 +308,25 @@ export const editUserOrganizations = (userId: string, organizationIds: string[])
         });
     }
 };
+
+export const editUserRoles = (userId: string, roleIds: string[]) => async (dispatch: Dispatch<any>) => {
+    dispatch({
+        type: usersActionTypes.USERS_EDIT_PENDING
+    });
+
+    try {
+        await userService.editUserRoles(userId, roleIds);
+        dispatch(change('userManagementForm', 'activePanelIndex', null));
+        dispatch({
+            type: usersActionTypes.USERS_EDIT_SUCCESS
+        });
+        loadManagementInitialUser(userId)(dispatch);
+    } catch (e) {
+        dispatch({
+            type: usersActionTypes.USERS_EDIT_ERROR,
+            payload: {
+                message: getErrorMessageFromStatusCode(e.response != null ? e.response.status : null)
+            }
+        });
+    }
+};
